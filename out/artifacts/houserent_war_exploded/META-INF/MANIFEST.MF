@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: 17309
+Build-Jdk: BellSoft Liberica version 1.8.0_333
+Implementation-Title: Verio Maven Webapp
+Implementation-Version: 1.0.0-SNAPSHOT
+Implementation-Vendor-Id: com.javaclimb
+Main-Class: ${start-class}
+
