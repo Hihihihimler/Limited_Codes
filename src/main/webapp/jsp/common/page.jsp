@@ -1,9 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:if test="${pageInfo.getPages() > 1}">
     <ul class ="pagination p-center">
     <c:choose>
-        <c:when test="${pageInfo.getPage() <=3}">
+        <c:when test="${pageInfo.getPages() <=3}">
             <c:set var="begin" value="1"/>
             <c:set var="end" value="${pageInfo.getPages()}"/>
         </c:when>
@@ -20,10 +19,11 @@
             </c:if>
             </c:otherwise>
         </c:choose>
+            <%--上一页--%>
         <c:choose>
-        <c:when test="${pageInfo.current eq 1 }">
-            <%--当前页为第一页，隐藏上一页按钮--%>
-        </c:when>
+            <c:when test="${pageInfo.current eq 1 }">
+                <%--当前页为第一页，隐藏上一页按钮--%>
+            </c:when>
             <c:otherwise>
                 <li class="page-item">
                     <a class="page-link" href="${pagePrefix}&page=${pageInfo.current-1}"
@@ -75,7 +75,7 @@
                 <li class="page-item">
                     <a class="page-link" href="${pagePrefix}&page=${pageInfo.current+1}"
                        aria-label="Next">
-                        <span class="ti-arrow-right"></span>
+                        &nbsp;<span class="ti-arrow-right"></span>&nbsp;
                         <span class="sr-only">下一页</span>
                     </a>
                 </li>

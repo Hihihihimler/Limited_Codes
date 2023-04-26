@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class BaseController {
     @Autowired
-    private HttpServletRequest request;
+    protected HttpServletRequest request;
 
     //获得当前登录用户
     public User getLoginUser(){
@@ -35,5 +35,17 @@ public class BaseController {
             return false;
         }
         return UserRoleEnum.ADMIN.getValue().equalsIgnoreCase(user.getRole());
+    }
+    public String renderNotFound(){
+        return "forward:/404";
+    }
+    public String renderNotAllowAccess(){
+        return "forward:/403";
+    }
+    public String renderServerException(){
+        return "forward:/500";
+    }
+    public String renderError(){
+        return "forward:/error";
     }
 }

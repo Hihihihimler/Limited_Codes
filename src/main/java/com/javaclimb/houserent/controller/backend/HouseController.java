@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 //房子控制器
@@ -44,7 +45,20 @@ public class HouseController extends BaseController {
     }
     //进入房子发布页面
     @RequestMapping("/publish")
-    public String publish(){
+    public String publish(@RequestParam(value = "id",required = false)Long id,Model model){
+        House house =new House();
+        //编辑页面
+        if(id!=null){
+            house = houseService.get(id);
+            if(house==null){
+                return renderNotFound();
+            }
+            //在无权限的情况下编辑他人的房子 跳转403
+            if(!loginUserIsAdmin() && !Objects.equals(house.getUserId(),getLoginUserId())){
+                return renderNotAllowAccess();
+            }
+        }
+        model.addAttribute("house",house);
         return "admin/house-publish";
     }
     //发布房子提交
@@ -52,8 +66,20 @@ public class HouseController extends BaseController {
     @ResponseBody
     public JsonResult publishSubmit(House house, @RequestParam("key")String key, HttpSession session){
         try{
-            house.setCreateTime(new Date());
-            house.setUserId(getLoginUserId());
+            if(house.getId() == null){
+                house.setCreateTime(new Date());
+                house.setUserId(getLoginUserId());
+            }else {
+                //发布不存在的id的房子
+                House queryHouse=houseService.get(house.getId());
+                if(queryHouse==null){
+                    return JsonResult.error("发布失败，没有此房屋");
+                }
+                //在无权限的情况下编辑他人的房子
+                if(!loginUserIsAdmin() && !Objects.equals(house.getUserId(),getLoginUserId())){
+                    return JsonResult.error("发布失败，无权限编辑");
+                }
+            }
             house.setStatus(HouseStatusEnum.NOT_CHECK.getValue());
             //获取轮播图
             String sessionKey = Constant.SESSION_IMG_PREFIX + key;
@@ -69,5 +95,124 @@ public class HouseController extends BaseController {
             return JsonResult.error("发布失败，请填写完整信息");
         }
         return JsonResult.success("发布成功",house.getId());
+    }
+
+    //上架房子
+    @RequestMapping("/up")
+    @ResponseBody
+    public JsonResult upHouse(@RequestParam("id")Long id){
+        try{
+            House house = houseService.get(id);
+            if(house==null){
+                return JsonResult.error("没有此房屋");
+            }
+            //在无权限的情况下下架他人的房子
+            if(!loginUserIsAdmin() && !Objects.equals(house.getUserId(),getLoginUserId())){
+                return JsonResult.error("无权限操作");
+            }
+            if(Objects.equals(house.getStatus(),HouseStatusEnum.HAS_RENT.getValue())){
+                return JsonResult.error("房子租出中");
+            }
+            house.setStatus(HouseStatusEnum.NOT_RENT.getValue());
+            houseService.update(house);
+        }catch (Exception e){
+            return JsonResult.error("上架失败");
+        }
+        return JsonResult.success("上架成功");
+    }
+
+    //下架房子
+    @RequestMapping("/down")
+    @ResponseBody
+    public JsonResult downHouse(@RequestParam("id")Long id){
+        try{
+            House house = houseService.get(id);
+                if(house==null){
+                    return JsonResult.error("没有此房屋");
+                }
+                //在无权限的情况下下架他人的房子
+                if(!loginUserIsAdmin() && !Objects.equals(house.getUserId(),getLoginUserId())){
+                    return JsonResult.error("无权限操作");
+                }
+                if(Objects.equals(house.getStatus(),HouseStatusEnum.HAS_RENT.getValue())){
+                    return JsonResult.error("房子租出中");
+                }
+                house.setStatus(HouseStatusEnum.HAS_DOWN.getValue());
+                houseService.update(house);
+        }catch (Exception e){
+            return JsonResult.error("下架失败");
+        }
+        return JsonResult.success("下架成功");
+    }
+
+    //审核房子通过
+    @RequestMapping("/checkPass")
+    @ResponseBody
+    public JsonResult checkPassHouse(@RequestParam("id")Long id){
+        try{
+            House house = houseService.get(id);
+            if(house==null){
+                return JsonResult.error("没有此房屋");
+            }
+            //仅限管理员审核
+            if(!loginUserIsAdmin()){
+                return JsonResult.error("无权限操作");
+            }
+            if(!Objects.equals(house.getStatus(),HouseStatusEnum.NOT_CHECK.getValue())){
+                return JsonResult.error("仅能审核待定房子");
+            }
+            house.setStatus(HouseStatusEnum.NOT_RENT.getValue());
+            houseService.update(house);
+        }catch (Exception e){
+            return JsonResult.error("审核失败");
+        }
+        return JsonResult.success("审核成功");
+    }
+
+    //审核房子不通过
+    @RequestMapping("/checkReject")
+    @ResponseBody
+    public JsonResult checkRejectHouse(@RequestParam("id")Long id){
+        try{
+            House house = houseService.get(id);
+            if(house==null){
+                return JsonResult.error("没有此房屋");
+            }
+            //仅限管理员审核
+            if(!loginUserIsAdmin()){
+                return JsonResult.error("无权限操作");
+            }
+            if(!Objects.equals(house.getStatus(),HouseStatusEnum.NOT_CHECK.getValue())){
+                return JsonResult.error("仅能审核待定房子");
+            }
+            house.setStatus(HouseStatusEnum.CHECK_REJECT.getValue());
+            houseService.update(house);
+        }catch (Exception e){
+            return JsonResult.error("审核失败");
+        }
+        return JsonResult.success("审核成功");
+    }
+
+    //删除
+    @RequestMapping("/delete")
+    @ResponseBody
+    public JsonResult deleteHouse(@RequestParam("id")Long id){
+        try{
+            House house = houseService.get(id);
+            if(house==null){
+                return JsonResult.error("没有此房屋");
+            }
+            //仅限管理员删除
+            if(!loginUserIsAdmin() && !Objects.equals(house.getUserId(),getLoginUserId())){
+                return JsonResult.error("无权限操作");
+            }
+            if(Objects.equals(house.getStatus(),HouseStatusEnum.HAS_RENT.getValue())){
+                return JsonResult.error("出租状态无法删除");
+            }
+            houseService.delete(id);
+        }catch (Exception e){
+            return JsonResult.error("删除失败");
+        }
+        return JsonResult.success("删除成功");
     }
 }

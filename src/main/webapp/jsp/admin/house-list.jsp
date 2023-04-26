@@ -44,25 +44,30 @@
                                         <a href="" title="查看">&nbsp;<i class="ti-eye"></i> </a>
                                         <%--已经租出的房子无法修改信息--%>
                                         <c:if test="${c.status !=1}">
-                                            <a href="" title="编辑">&nbsp;<i class="ti-pencil"></i>&nbsp;</a>
+                                            <a href="/admin/house/publish?id=${c.id}" title="编辑">&nbsp;<i class="ti-pencil"></i>&nbsp;</a>
                                         </c:if>
-                                        <c:if test="${c.status ==1}">
-                                            <a href="" title="上架">&nbsp;<i class="ti-control-play"></i>&nbsp;</a>
+                                        <c:if test="${c.status ==-1}">
+                                            <a href="javascript:void(0)" onclick="upHouse(${c.id})" title="上架">&nbsp;<i class="ti-control-play"></i>&nbsp;</a>
                                         </c:if>
                                         <c:if test="${c.status ==0}">
-                                            <a href="" title="下架">&nbsp;<i class="ti-control-pause"></i>&nbsp;</a>
+                                            <a href="javascript:void(0)" onclick="downHouse(${c.id})" title="下架">&nbsp;<i class="ti-control-pause"></i>&nbsp;</a>
                                         </c:if>
                                         <c:if test="${c.status !=1}">
-                                            <a href="" title="删除">&nbsp;<i class="ti-close"></i>&nbsp;</a>
+                                            <a href="javascript:void(0)" onclick="deleteHouse(${c.id})" title="删除">&nbsp;<i class="ti-close"></i>&nbsp;</a>
                                         </c:if>
-                                        <c:if test="${c.status !=1}">
-                                            <a href="" title="审核通过">&nbsp;<i class="ti-arrow-up"></i>&nbsp;</a>
-                                            <a href="" title="审核驳回">&nbsp;<i class="ti-arrow-down"></i>&nbsp;</a>
+                                        <c:if test="${isAdmin && c.status == -2}">
+                                            <a href="javascript:void(0)" onclick="checkPassHouse(${c.id})" title="审核通过">&nbsp;<i class="ti-arrow-up"></i>&nbsp;</a>
+                                            <a href="javascript:void(0)" onclick="checkRejectHouse(${c.id})" title="审核驳回">&nbsp;<i class="ti-arrow-down"></i>&nbsp;</a>
                                         </c:if>
                                     </div>
                                 </div>
                             </div>
                         </c:forEach>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <%@include file="../common/page.jsp"%>
+                        </div>
                     </div>
                 </div>
             </div>

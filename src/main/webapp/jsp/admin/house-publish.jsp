@@ -12,6 +12,7 @@
                     <div class="container">
                         <div class="row">
                             <form id="houseForm">
+                                <input type="hidden" id="id" name="id" value="${house.id}">
                                 <input type="hidden" id="key" name="key">
                                 <div class="col-lg-12 col-md-12">
                                     <div class="submit-page form-simple">
@@ -21,44 +22,42 @@
                                                 <div class="form-group col-md-6">
                                                     <label>出租类型</label>
                                                     <select name="rentType" class="form-control">
-                                                        <option value="whole">整租</option>
-                                                        <option value="share">合租</option>
+                                                        <option value="whole" <c:if test="${house.rentType == 'whole'}">selected</c:if>>整租</option>
+                                                        <option value="share" <c:if test="${house.rentType == 'share'}">selected</c:if>>合租</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label>月租金<a href="#" class="tip-topdata" data-tip="日租金=月租金/30"><i
-                                                            class="ti-help"></i></a></label>
-                                                    <input type="number" name="monthRent" class="form-control">
+                                                    <label>月租金<a href="#" class="tip-topdata" data-tip="日租金=月租金/30"><i class="ti-help"></i> </a></label>
+                                                    <input type="number" name="monthRent" class="form-control" value="${house.monthRent}">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>所属城市</label>
                                                     <select name="city" class="form-control">
-                                                        <option value="北京">北京</option>
-                                                        <option value="上海">上海</option>
-                                                        <option value="广州">广州</option>
-                                                        <option value="深圳">深圳</option>
-                                                        <option value="武汉">武汉</option>
-                                                        <option value="重庆">重庆</option>
-                                                        <option value="杭州">杭州</option>
+                                                        <option value="北京" <c:if test="${house.city == '北京'}">selected</c:if>>北京</option>
+                                                        <option value="上海" <c:if test="${house.city == '上海'}">selected</c:if>>上海</option>
+                                                        <option value="广州" <c:if test="${house.city == '广州'}">selected</c:if>>广州</option>
+                                                        <option value="深圳" <c:if test="${house.city == '深圳'}">selected</c:if>>深圳</option>
+                                                        <option value="武汉" <c:if test="${house.city == '武汉'}">selected</c:if>>武汉</option>
+                                                        <option value="重庆" <c:if test="${house.city == '重庆'}">selected</c:if>>重庆</option>
+                                                        <option value="杭州" <c:if test="${house.city == '杭州'}">selected</c:if>>杭州</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>房子标题信息<a href="#" class="tip-topdata" data-tip="合租-四合院"><i
                                                             class="ti-help"></i></a></label>
-                                                    <input type="text" name="title" class="form-control">
+                                                    <input type="text" name="title" class="form-control" value="${house.title}">
                                                 </div>
                                                 <div class="form-group col-md-8">
                                                     <label>房子详细地址信息<a href="#" class="tip-topdata" data-tip="北京四合院"><i
                                                             class="ti-help"></i></a></label>
-                                                    <input type="text" name="address" class="form-control">
+                                                    <input type="text" name="address" class="form-control" value="${house.address}">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>经纬度坐标<a
                                                             href="https://api.map.baidu.com/lbsapi/getpoint/index.html"
                                                             target="_blank">点击获取</a>
-                                                        <a href="#" class="tip-topdata" data-tip="经纬度"><i
-                                                                class="ti-help"></i></a></label>
-                                                    <input type="text" name="longitudeLatitude" class="form-control">
+                                                        <a href="#" class="tip-topdata" data-tip="经纬度"><i class="ti-help"></i></a></label>
+                                                    <input type="text" name="longitudeLatitude" class="form-control" value="${house.longitudeLatitude}">
                                                 </div>
                                             </div>
                                         </div>
@@ -67,59 +66,57 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label>房产证号</label>
-                                                    <input type="text" name="cetificateNo" class="form-control">
+                                                    <input type="text" name="cetificateNo" class="form-control" value="${house.cetificateNo}">
                                                     </input>
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label>面积<a href="#" class="tip-topdata"
-                                                                data-tip="整租类型时为完整面积，合租时为单间面积"><i
-                                                            class="ti-help"></i></a></label>
-                                                    <input type="number" name="monthRent" class="form-control">
+                                                    <label>面积<a href="#" class="tip-topdata" data-tip="整租类型时为完整面积，合租时为单间面积"><i class="ti-help"></i></a></label>
+                                                    <input type="text" name="area" class="form-control" value="${house.area}">
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label>朝向</label>
-                                                    <input type="text" name="direction" class="form-control">
+                                                    <input type="text" name="direction" class="form-control" value="${house.direction}">
                                                     </input>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>是否有空调</label>
                                                     <select name="hasAirConditioner" class="form-control">
-                                                        <option value="1">有空调</option>
-                                                        <option value="0">无空调</option>
+                                                        <option value="1" <c:if test="${house.hasAirConditioner == '1'}">selected</c:if>>有空调</option>
+                                                        <option value="0" <c:if test="${house.hasAirConditioner == '0'}">selected</c:if>>无空调</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>卧室数量</label>
                                                     <select name="bedroomNum" class="form-control">
-                                                        <option value="1">1个</option>
-                                                        <option value="2">2个</option>
-                                                        <option value="3">3个</option>
-                                                        <option value="4">4个</option>
+                                                        <option value="1" <c:if test="${house.bedroomNum == '1'}">selected</c:if>>1个</option>
+                                                        <option value="2" <c:if test="${house.bedroomNum == '2'}">selected</c:if>>2个</option>
+                                                        <option value="3" <c:if test="${house.bedroomNum == '3'}">selected</c:if>>3个</option>
+                                                        <option value="4" <c:if test="${house.bedroomNum == '4'}">selected</c:if>>4个</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>客厅数量</label>
                                                     <select name="livingRoomNum" class="form-control">
-                                                        <option value="1">1个</option>
-                                                        <option value="2">2个</option>
-                                                        <option value="3">3个</option>
-                                                        <option value="4">4个</option>
+                                                        <option value="1" <c:if test="${house.livingRoomNum == '1'}">selected</c:if>>1个</option>
+                                                        <option value="2" <c:if test="${house.livingRoomNum == '2'}">selected</c:if>>2个</option>
+                                                        <option value="3" <c:if test="${house.livingRoomNum == '3'}">selected</c:if>>3个</option>
+                                                        <option value="4" <c:if test="${house.livingRoomNum == '4'}">selected</c:if>>4个</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>厨房数量</label>
                                                     <select name="kitchenNum" class="form-control">
-                                                        <option value="1">1个</option>
-                                                        <option value="2">2个</option>
+                                                        <option value="1" <c:if test="${house.kitchenNum == '1'}">selected</c:if>>1个</option>
+                                                        <option value="2" <c:if test="${house.kitchenNum == '2'}">selected</c:if>>2个</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>厕所数量</label>
                                                     <select name="toiletNum" class="form-control">
-                                                        <option value="1">1个</option>
-                                                        <option value="2">2个</option>
+                                                        <option value="1" <c:if test="${house.toiletNum == '1'}">selected</c:if>>1个</option>
+                                                        <option value="2" <c:if test="${house.toiletNum == '2'}">selected</c:if>>2个</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -129,21 +126,21 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label>建成年份</label>
-                                                    <input type="number" name="buildYear" class="form-control">
+                                                    <input type="number" name="buildYear" class="form-control" value="${house.buildYear}">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>所在楼层</label>
-                                                    <input type="number" name="floor" class="form-control">
+                                                    <input type="number" name="floor" class="form-control" value="${house.floor}">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>总楼层</label>
-                                                    <input type="number" name="maxFloor" class="form-control">
+                                                    <input type="number" name="maxFloor" class="form-control" value="${house.maxFloor}">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>是否有电梯</label>
                                                     <select name="hasElevator" class="form-control">
-                                                        <option value="1">有电梯</option>
-                                                        <option value="0">无电梯</option>
+                                                        <option value="1" <c:if test="${house.hasAirConditioner == '1'}">selected</c:if>>有电梯</option>
+                                                        <option value="0" <c:if test="${house.hasAirConditioner == '0'}">selected</c:if>>无电梯</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -153,11 +150,11 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label>联系人姓名</label>
-                                                    <input type="text" name="contactName" class="form-control">
+                                                    <input type="text" name="contactName" class="form-control" value="${house.contactName}">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>联系人电话</label>
-                                                    <input type="text" name="contactPhone" class="form-control">
+                                                    <input type="text" name="contactPhone" class="form-control" value="${house.contactPhone}">
                                                 </div>
                                             </div>
                                         </div>
@@ -166,7 +163,7 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <label>房屋详细描述</label>
-                                                    <textarea class="form-control ht-120" name="content"></textarea>
+                                                    <textarea class="form-control ht-120" name="content">${house.content}</textarea>
                                                 </div>
                                             </div>
                                         </div>

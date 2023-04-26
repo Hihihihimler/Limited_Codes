@@ -30,6 +30,7 @@ public class House extends BaseEntity {
     private Integer floor;
     private Integer maxFloor;
     private Integer hasElevator;
+    private Integer buildYear;
     private String direction;
     private Date lastOrderStartTime;
     private String longitudeLatitude;
